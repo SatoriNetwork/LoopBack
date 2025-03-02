@@ -40,6 +40,7 @@ def check():
         return jsonify({"error": "'port' must be an integer"}), 400
 
     # Run the asynchronous WebSocket check in a new event loop.
+    print(data)
     if data.get('handshake'):
         loop = asyncio.new_event_loop()
         asyncio.set_event_loop(loop)
