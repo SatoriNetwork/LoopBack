@@ -37,13 +37,14 @@ def check():
     except ValueError:
         return jsonify({"error": "'port' must be an integer"}), 400
 
-    # Run the asynchronous WebSocket check in a new event loop.
     if data.get('handshake'):
+        # Run the asynchronous WebSocket check in a new event loop.
         loop = asyncio.new_event_loop()
         asyncio.set_event_loop(loop)
         result = loop.run_until_complete(check_websocket(ip, port))
         loop.close()
     else:
+        # just see if we can reach the service
         result = check_port(ip, port, timeout=2)
 
     return jsonify({"ip": ip, "port": port, "websocket_open": result})
