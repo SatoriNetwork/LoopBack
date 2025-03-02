@@ -4,6 +4,18 @@ import websockets
 
 app = Flask(__name__)
 
+
+def check_port(ip, port, timeout=2):
+    import socket
+    import sys
+    with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
+        s.settimeout(timeout)
+        try:
+            s.connect((ip, port))
+            return True
+        except socket.error:
+            return False
+            
 async def check_websocket(ip, port, timeout=5):
     uri = f"ws://{ip}:{port}/"
     try:
@@ -26,10 +38,13 @@ def check():
         return jsonify({"error": "'port' must be an integer"}), 400
 
     # Run the asynchronous WebSocket check in a new event loop.
-    loop = asyncio.new_event_loop()
-    asyncio.set_event_loop(loop)
-    result = loop.run_until_complete(check_websocket(ip, port))
-    loop.close()
+    if data.get('handshake'):
+        loop = asyncio.new_event_loop()
+        asyncio.set_event_loop(loop)
+        result = loop.run_until_complete(check_websocket(ip, port))
+        loop.close()
+    else:
+        retult = check_port()
 
     return jsonify({"ip": ip, "port": port, "websocket_open": result})
 
