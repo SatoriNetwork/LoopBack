@@ -5,7 +5,7 @@ import websockets
 app = Flask(__name__)
 
 
-def check_port(ip, port, timeout=2):
+def check_port(ip, port, timeout=5):
     import socket
     import sys
     with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
@@ -44,7 +44,7 @@ def check():
         result = loop.run_until_complete(check_websocket(ip, port))
         loop.close()
     else:
-        retult = check_port()
+        retult = check_port(ip, port, timeout=2)
 
     return jsonify({"ip": ip, "port": port, "websocket_open": result})
 
