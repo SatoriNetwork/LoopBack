@@ -47,7 +47,7 @@ def check():
         result = loop.run_until_complete(check_websocket(ip, port))
         loop.close()
     else:
-        retult = check_port(ip, port, timeout=2)
+        result = await check_port(ip, port, timeout=2)
 
     return jsonify({"ip": ip, "port": port, "websocket_open": result})
 
