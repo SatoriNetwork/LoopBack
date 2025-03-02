@@ -19,3 +19,6 @@ ENV FLASK_APP=app.py
 
 # Run app.py when the container launches
 CMD ["python", "app.py"]
+
+# docker build -t websocket-checker .
+# docker run -p 5000:5000 websocket-checker
